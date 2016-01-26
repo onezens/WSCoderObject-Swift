@@ -7,6 +7,13 @@ Object-C 版归档工具类： [https://github.com/wackosix/WSCoderObject-OC](ht
 1. 将 WSCoderObject.swift 文件导入你的项目
 2. 把你需要归档的类文件，继承于 WSCoderObject
 3. 通过 `NSKeyedArchiver.archiveRootObject(rootObject: AnyObject, toFile: String)` 来归档你需要保存的类; `NSKeyedUnarchiver.unarchiveObjectWithFile(path: String)` 方法来解档保存在本地的类。
+4. 如果你的类重写了init方法，或者init方法的重载，那么你的子类必须要实现下面这个方法，否则会报错
+
+```
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+```
 
 #Demo
 你的类只需要继承于：WSCoderObject
