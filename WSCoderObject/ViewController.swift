@@ -2,8 +2,8 @@
 //  ViewController.swift
 //  WSCoderObject
 //
-//  Created by WackoSix on 16/1/25.
-//  Copyright © 2016年 www.wackosix.cn. All rights reserved.
+//  Created by OneZens on 16/1/25.
+//  Copyright © 2016年 www.onezen.cc. All rights reserved.
 //
 
 import UIKit
@@ -17,17 +17,17 @@ class ViewController: UIViewController {
         
         xiaoming.name = "xiaoming"
         xiaoming.age = 18
-        xiaoming.birth = NSDate()
-        xiaoming.icon = UIImage(named: "")
+        xiaoming.birth = Date()
+        xiaoming.icon = UIImage()
         
-        var path = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true).first!
-        path = path.stringByAppendingString("/person.data")
+        var path = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true).first!
+        path = path + "/person.data"
         
         //归档
         NSKeyedArchiver.archiveRootObject(xiaoming, toFile: path)
         
         //解档
-        let obj = NSKeyedUnarchiver.unarchiveObjectWithFile(path)
+        let obj = NSKeyedUnarchiver.unarchiveObject(withFile: path)
         print(obj)
     }
 

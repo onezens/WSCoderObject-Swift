@@ -3,6 +3,9 @@ WSCoderObject-Swift，Swift一键归档工具类,NSCoding
 
 Object-C 版归档工具类： [https://github.com/wackosix/WSCoderObject-OC](https://github.com/wackosix/WSCoderObject-OC)
 
+# 版本
+* 2016.10.29 更新到swift 3.0
+
 # 用法(Usage)
 1. 将 WSCoderObject.swift 文件导入你的项目
 2. 把你需要归档的类文件，继承于 WSCoderObject
@@ -10,7 +13,7 @@ Object-C 版归档工具类： [https://github.com/wackosix/WSCoderObject-OC](ht
 4. 如果你的类重写了init方法，或者init方法的重载，那么你的子类必须要实现下面这个方法，否则会报错
 
 ```
-    required init?(coder aDecoder: NSCoder) {
+ required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
 ```
@@ -27,7 +30,7 @@ class Person: WSCoderObject {
     
     var icon: UIImage?
     
-    var birth: NSDate?
+    var birth: Date?
     
     //重写description
     
@@ -35,30 +38,41 @@ class Person: WSCoderObject {
         
         let keys = ["name", "age", "icon", "birth"]
         
-        return dictionaryWithValuesForKeys(keys).description
+        return dictionaryWithValues(forKeys: keys).description
     }
-}
+	}
+	
+    /// 重写init方法
+    override init() {
+        super.init()
+    }
+    /// 重写解档方法
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+
 
 ```
 
 自动实现归档、解档
 
 ```
-        let xiaoming = Person()
-        xiaoming.name = "xiaoming"
-        xiaoming.age = 18
-        xiaoming.birth = NSDate()
-        xiaoming.icon = UIImage(named: "")
-        
-        var path = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true).first!
-        path = path.stringByAppendingString("/person.data")
+	let xiaoming = Person()
+	xiaoming.name = "xiaoming"
+	xiaoming.age = 18
+	xiaoming.birth = Date()
+	xiaoming.icon = UIImage()
+	
+	var path = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true).first!
+        path = path + "/person.data"
         
         //归档
         NSKeyedArchiver.archiveRootObject(xiaoming, toFile: path)
         
         //解档
-        let obj = NSKeyedUnarchiver.unarchiveObjectWithFile(path)
+        let obj = NSKeyedUnarchiver.unarchiveObject(withFile: path)
         print(obj)
+
 
 ```
 
